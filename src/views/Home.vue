@@ -7,15 +7,17 @@
 
 <style lang="less" scoped>
   .home {
-    height: 500px;
-    background-image: url(../assets/bgimg1.jpg);
+    height: 600px;
+    background-image: url(../assets/pic/bgimg1.jpg);
     background-repeat: no-repeat;
-    background-size: 100% 500px;
+    background-size: 100% 100%;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
   }
   .home > span {
     font-size: 25px;
+    font-weight: bold; 
+    margin-top: 20px;
   }
 </style>

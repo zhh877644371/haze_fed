@@ -25,17 +25,62 @@ export default new Router({
     {
       path: "/register",
       name: "register",
-      component: () => import("./views/Register.vue")
+      component: () => import("./views/UserManage/Register.vue")
     },
     {
       path: "/login",
       name: "login",
-      component: () => import("./views/Login.vue")
+      component: () => import("./views/UserManage/Login.vue")
     },
     {
-      path: "/dataStorage1",
-      name: "dataStroage1",
-      component: () => import("./views/PicDataStorage.vue")
-    }
+      path: "/userInfChange",
+      name: "userInfChange",
+      component: () => import("./views/UserManage/UserInfChange.vue")
+    },
+    {
+      path: "/picDataStorage1",
+      name: "picDataStroage1",
+      component: () => import("./views/DataUpload/PicDataStorage.vue")
+    },
+    {
+      path: "/picDataStorage2",
+      name: "picDataStroage2",
+      component: () => import("./views/DataUpload/ScatterPicture.vue")
+    },
+    {
+      path: "/txtDataStorage",
+      name: "txtDataStroage",
+      component: () => import("./views/DataUpload/TxtDataStorage.vue")
+    },
+    {
+      path: "/dataSearch",
+      name: "dataSearch",
+      component: () => import("./views/DataSearch/DataSearch.vue")
+    },
+    {
+      path: "/ChinaMap",
+      name: "ChinaMap",
+      component: () => import("./views/DataScene/ChinaMap.vue")
+    },
+    {
+      path: "/WorldMap",
+      name: "WorldMap",
+      component: () => import("./views/DataScene/WorldMap.vue")
+    },
+    {
+      path: "/dataAnalysis1",
+      name: "dataAnalysis1",
+      component: () => import("./views/DataScene/DataAnalysis1.vue")
+    },
+    {
+      path: "/lidarAnalysis1",
+      name: "lidarAnalysis1",
+      component: () => import("./views/DataScene/LidarAnalysis1.vue")
+    },
+    {
+      path: "/lidarAnalysis2",
+      name: "lidarAnalysis2",
+      component: () => import("./views/DataScene/LidarAnalysis2.vue")
+    },
   ]
 });

@@ -4,18 +4,11 @@ import router from "./router";
 import store from "./store";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
-// import axios from "axios";
+import echarts from "echarts";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
-
-// axios.get('http://localhost:3000/product')
-//   .then(response => {
-//     console.log(response);
-//   })
-//   .catch(error => {
-//     console.warn(error);
-//   });
+Vue.prototype.$echarts = echarts;
 
 new Vue({
   router,
