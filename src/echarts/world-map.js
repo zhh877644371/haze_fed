@@ -229,7 +229,8 @@ var countryMap = [
   "德国",
   "印度",
   "南非",
-  "澳大利亚"
+  "澳大利亚",
+  "沙特阿拉伯"
 ];
 
 for (var i in nameMap) {

@@ -27,9 +27,8 @@
         </template>
           <el-menu-item index="2-1" v-on:click="toWorldMap">雷达比数据世界分布</el-menu-item>
           <el-menu-item index="2-2" v-on:click="toChinaMap">雷达比数据中国分布</el-menu-item>
-          <el-menu-item index="2-3" v-on:click="toLidarAnalysis1">雷达比与高度</el-menu-item>
-          <el-menu-item index="2-4" v-on:click="toLidarAnalysis2">雷达比与波长</el-menu-item>
-          <el-menu-item index="2-5" v-on:click="toDataAnalysis1">雷达比数据库分析</el-menu-item>
+          <el-menu-item index="2-3" v-on:click="toDataAnalysis1">雷达比数据库分析</el-menu-item>
+          <el-menu-item index="2-4" v-on:click="toLidarAnalysis3">雷达比与波长</el-menu-item>
       </el-submenu>
       <el-menu-item index="3">
         <i class="el-icon-setting"></i>
@@ -85,11 +84,8 @@ export default {
     toDataAnalysis1() {
       this.$router.push('/dataAnalysis1');
     },
-    toLidarAnalysis1() {
-      this.$router.push('/lidarAnalysis1');
-    },
-    toLidarAnalysis2() {
-      this.$router.push('/lidarAnalysis2');
+    toLidarAnalysis3() {
+      this.$router.push('/lidarAnalysis3');
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);

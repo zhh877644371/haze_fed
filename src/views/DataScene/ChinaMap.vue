@@ -7,6 +7,7 @@
 import option from '@/echarts/china-map.js';
 import echarts from 'echarts';
 import 'echarts/map/js/china.js';
+import { ProvinceMap } from '@/assets/constant';
 
 export default {
   name: '',
@@ -16,8 +17,15 @@ export default {
   },
   methods: {
     drawChinaMap() {
+      var router = this.$router;
       var myChart = this.$echarts.init(document.getElementById('mapContainer'));
       myChart.setOption(option);
+      myChart.on('click', function(params) {
+        console.log(params);
+        if(ProvinceMap[params.name]) {
+          router.push(`/lidarAnalysis1/China/${params.name}`);
+        }
+      })
     }
   },
   mounted() {

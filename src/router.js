@@ -70,17 +70,22 @@ export default new Router({
     {
       path: "/dataAnalysis1",
       name: "dataAnalysis1",
-      component: () => import("./views/DataScene/DataAnalysis1.vue")
+      component: () => import("./views/DataScene/DBAnalysis.vue")
     },
     {
-      path: "/lidarAnalysis1",
+      path: "/lidarAnalysis1/:country/:province",
       name: "lidarAnalysis1",
       component: () => import("./views/DataScene/LidarAnalysis1.vue")
     },
     {
-      path: "/lidarAnalysis2",
+      path: "/lidarAnalysis2/:country",
       name: "lidarAnalysis2",
       component: () => import("./views/DataScene/LidarAnalysis2.vue")
     },
+    {
+      path: "/lidarAnalysis3",
+      name: "lidarAnalysis3",
+      component: () => import("./views/DataScene/LidarAnalysis3.vue")
+    }
   ]
 });
