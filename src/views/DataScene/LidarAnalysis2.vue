@@ -44,7 +44,7 @@ export default {
       // 销毁之前的实例
       chart1.dispose();
       let myChart = this.$echarts.init(document.getElementById('container'));  
-      myChart.hideLoading();
+      myChart.showLoading();
       axios.get(`${server}/getLidarData`, {
         params: {
           country: CountryMap[country]
@@ -52,6 +52,7 @@ export default {
       }).then((res) => {
         console.log('res', res);
         if(res.data.code == 200) {
+          myChart.hideLoading();
           if(this.value == 1) {
             drawLidarHeight(myChart, res.data, country);
           } else if (this.value == 2) {

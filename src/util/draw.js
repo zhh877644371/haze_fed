@@ -98,7 +98,7 @@ function drawLidarWave(chart, data) {
           params.value[0]
         }<br>高度： ${params.value[1]}km`;
       },
-      axisPointer:{
+      axisPointer: {
         show: true,
         type: "cross",
         lineStyle: {

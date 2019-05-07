@@ -25,7 +25,7 @@
 </template>
 <script>
 import echarts from 'echarts';
-import { countryStatistics, waveStatistics } from '@/assets/dbData';
+import { countryStatistics, waveStatistics, yearStatistics } from '@/assets/dbData';
 import { drawCategory, drawPie } from '@/util/draw';
 
 export default {
@@ -46,6 +46,9 @@ export default {
       }, {
         value: 2,
         label: '波长分布'
+      }, {
+        value: 3,
+        label: '年份分布'
       }],
       dataType: 1,
     }
@@ -55,17 +58,8 @@ export default {
       let chart1 = this.$echarts.init(document.getElementById('container'));
       chart1.dispose();
       let myChart = this.$echarts.init(document.getElementById('container'));
-      let drawData = [countryStatistics, waveStatistics];
-      let title = ['地区分布', '波长分布'];
-      // if (this.dataType == 1 && this.picType == 1) {
-      //   drawPie(myChart, countryStatistics, '地区分布');
-      // } else if (this.dataType == 1 && this.picType == 2) {
-      //   drawCategory(myChart, countryStatistics, '地区分布');
-      // } else if (this.dataType == 2 && this.picType == 1) {
-      //   drawPie(myChart, waveStatistics, '波长分布');
-      // } else if (this.dataType == 2 && this.picType == 2) {
-      //   drawCategory(myChart, waveStatistics, '波长分布');
-      // }
+      let drawData = [countryStatistics, waveStatistics, yearStatistics];
+      let title = this.dataOptions.map((item) => item.label);
       if (this.picType == 1) {
         drawPie(myChart, drawData[this.dataType - 1], title[this.dataType - 1]);
       } else if (this.picType == 2) {

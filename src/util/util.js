@@ -5,7 +5,12 @@ function dealLidarData(arr, param) {
   let result = [],
     tmp = [];
   arr.forEach(item => {
-    tmp = [item.value || 0, item[param] || 0, item.wavelength || "未知"];
+    tmp = [
+      item.value || 0,
+      item[param] || 0,
+      item.wavelength || "未知波长",
+      item.paper_id || "未知论文"
+    ];
     result.push(tmp);
   });
   return result;
@@ -40,7 +45,7 @@ function detachWaveData(arr) {
     wave532 = [],
     tmp = [];
   arr.forEach(item => {
-    tmp = [item.value || 0, item.height || 0];
+    tmp = [item.value || 0, item.height || 0, item.paper_id || "未知波长"];
     if (item.wavelength == "355nm") {
       wave355.push(tmp);
     } else if (item.wavelength == "532nm") {
