@@ -5,13 +5,11 @@ function dealLidarData(arr, param) {
   let result = [],
     tmp = [];
   arr.forEach(item => {
-    tmp = [
-      item.value || 0,
-      item[param] || 0,
-      item.wavelength || "未知波长",
-      item.paper_id || "未知论文"
-    ];
-    result.push(tmp);
+    tmp = [item.value || 0, item[param] || 0, item.wavelength || "未知波长"];
+    result.push({
+      paper_id: item.paper_id,
+      value: tmp
+    });
   });
   return result;
 }
@@ -45,16 +43,21 @@ function detachWaveData(arr) {
     wave532 = [],
     tmp = [];
   arr.forEach(item => {
-    tmp = [item.value || 0, item.height || 0, item.paper_id || "未知波长"];
+    tmp = [item.height || 0, item.value || 0, item.wavelength || "未知波长"];
     if (item.wavelength == "355nm") {
-      wave355.push(tmp);
+      wave355.push({
+        paper_id: item.paper_id,
+        value: tmp
+      });
     } else if (item.wavelength == "532nm") {
-      wave532.push(tmp);
+      wave532.push({
+        paper_id: item.paper_id,
+        value: tmp
+      });
     }
   });
   result.wave355 = wave355;
   result.wave532 = wave532;
-  console.log("result", result);
   return result;
 }
 
@@ -91,10 +94,50 @@ function dealCategoryData(arr) {
   return result;
 }
 
+function dealLineData(arr) {
+  if (!Array.isArray(arr)) {
+    return;
+  }
+  let data = arr.filter(
+    item => item.year == "2009" && item.location_tip == "Bozeman, Montana"
+  );
+  console.log("data", data);
+  let timeArr = [],
+    value532 = [],
+    value1064 = [],
+    date = "",
+    result = {};
+  data.forEach(item => {
+    if (item.wavelength == "532nm") {
+      value532.push({
+        value: item.value,
+        paper_id: item.paper_id
+      });
+    } else if (item.wavelength == "1064nm") {
+      value1064.push({
+        value: item.value,
+        paper_id: item.paper_id
+      });
+    }
+    let tmp = item.time_tip.split(",");
+    date = tmp[0];
+    if (!timeArr.includes(tmp[1])) {
+      timeArr.push(tmp[1]);
+    }
+  });
+  result.timeArr = timeArr;
+  result.value532 = value532;
+  result.value1064 = value1064;
+  result.date = date;
+  result.location = "Bozeman";
+  return result;
+}
+
 export {
   dealLidarData,
   dataPointSort,
   detachWaveData,
   dealPieLegend,
-  dealCategoryData
+  dealCategoryData,
+  dealLineData
 };

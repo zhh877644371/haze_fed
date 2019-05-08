@@ -3,7 +3,8 @@ import {
   dataPointSort,
   detachWaveData,
   dealPieLegend,
-  dealCategoryData
+  dealCategoryData,
+  dealLineData
 } from "./util";
 
 function drawLidarHeight(chart, data, location) {
@@ -82,7 +83,7 @@ function drawLidarWave(chart, data) {
   let lidarWaveData = detachWaveData(data.result);
   chart.setOption({
     title: {
-      text: "雷达比与波长相关性分析"
+      text: "雷达比综合分析"
     },
     grid: {
       left: "3%",
@@ -94,9 +95,12 @@ function drawLidarWave(chart, data) {
       // trigger: 'axis',
       showDelay: 0,
       formatter: function(params) {
+        if (params.name != "") {
+          return `${params.name}：${params.value}`;
+        }
         return `${params.seriesName} :<br> 雷达比：${
-          params.value[0]
-        }<br>高度： ${params.value[1]}km`;
+          params.value[1]
+        }<br>高度： ${params.value[0]}km`;
       },
       axisPointer: {
         show: true,
@@ -125,12 +129,12 @@ function drawLidarWave(chart, data) {
         type: "value",
         scale: true,
         axisLabel: {
-          formatter: "{value}"
+          formatter: "{value} km"
         },
         splitLine: {
           show: false
         },
-        name: "雷达比"
+        name: "高度"
       }
     ],
     yAxis: [
@@ -138,12 +142,12 @@ function drawLidarWave(chart, data) {
         type: "value",
         scale: true,
         axisLabel: {
-          formatter: "{value} km"
+          formatter: "{value}"
         },
         splitLine: {
           show: false
         },
-        name: "高度"
+        name: "雷达比"
       }
     ],
     series: [
@@ -307,6 +311,116 @@ function drawLidarDepo(chart, data) {
   });
 }
 
+function drawLidarLine(chart, data) {
+  let lineData = dealLineData(data);
+  chart.setOption({
+    title: {
+      text: `数据来源于${lineData.location}地区${lineData.date}`
+    },
+    grid: {
+      left: "3%",
+      right: "7%",
+      bottom: "3%",
+      containLabel: true
+    },
+    tooltip: {
+      trigger: "axis",
+      showDelay: 0,
+      // formatter: function (params) {
+      //   console.log('params', params);
+      // },
+      axisPointer:{
+        show: true,
+        type: "cross",
+        lineStyle: {
+          type: "dashed",
+          width: 1
+        }
+      }
+    },
+    toolbox: {
+      feature: {
+        dataZoom: {},
+        brush: {
+          type: ["rect", "polygon", "clear"]
+        }
+      }
+    },
+    brush: {},
+    legend: {
+      data: ["532nm", "1064nm"],
+      left: "center"
+    },
+    xAxis: [
+      {
+        // type: "value",
+        // scale: true,
+        // // axisLabel: {
+        // //   formatter: "{value}:00"
+        // // },
+        // splitLine: {
+        //   show: false
+        // },
+        name: "时间",
+        data: lineData.timeArr
+      }
+    ],
+    yAxis: [
+      {
+        type: "value",
+        min: 20,
+        max: 100,
+        name: "雷达比",
+        // data: [20, 40, 60, 80, 100, 120]
+      }
+    ],
+    series: [
+      {
+        name: "532nm",
+        type: "line",
+        data: lineData.value532,
+        markArea: {
+          silent: true,
+          itemStyle: {
+            normal: {
+              color: "transparent",
+              borderWidth: 1,
+              borderType: "dashed"
+            }
+          }
+        },
+        markPoint: {
+          data: [
+            { type: "max", name: "最大值" },
+            { type: "min", name: "最小值" }
+          ]
+        }
+      },
+      {
+        name: "1064nm",
+        type: "line",
+        data: lineData.value1064,
+        markArea: {
+          silent: true,
+          itemStyle: {
+            normal: {
+              color: "transparent",
+              borderWidth: 1,
+              borderType: "dashed"
+            }
+          }
+        },
+        markPoint: {
+          data: [
+            { type: "max", name: "最大值" },
+            { type: "min", name: "最小值" }
+          ]
+        }
+      }
+    ]
+  });
+}
+
 function drawCategory(chart, data, title) {
   let categoryData = dealCategoryData(data);
   chart.setOption({
@@ -370,4 +484,4 @@ function drawPie(chart, data, title) {
   });
 }
 
-export { drawLidarHeight, drawLidarWave, drawLidarDepo, drawCategory, drawPie };
+export { drawLidarHeight, drawLidarWave, drawLidarDepo, drawLidarLine, drawCategory, drawPie };

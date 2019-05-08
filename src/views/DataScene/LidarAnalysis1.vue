@@ -42,7 +42,9 @@ export default {
         disabled: true
       }],
       value: 1,
-      paper_name: ''
+      paper_id: 0,
+      paper_name: '',
+      file_name: ''
     }
   },
   methods: {
@@ -70,15 +72,17 @@ export default {
             drawLidarDepo(myChart, res.data);
           }
           myChart.on('click', (params) => {
-            let paper_id = params.data[params.data.length - 1];
+            let id = params.data[params.data.length - 1];
             axios.get(`${server}/getPaperInfo`, {
               params: {
-                paper_id: paper_id
+                paper_id: id
               }
             }).then((res) => {
               console.log('paper_info', res);
               if (res.data.code == 200) {
+                this.paper_id = res.data.paper_info.id;
                 this.paper_name = res.data.paper_info.name;
+                this.file_name = res.data.paper_info.file_name;
               } else {
                 this.$message({
                   showClose: true,
@@ -102,7 +106,8 @@ export default {
       });
     },
     openFile() {
-      console.log('111');
+      let pdf_path = `pdf_file/${this.paper_id}.${this.file_name}.pdf`;
+      window.open(`http://localhost:8080/pdf/web/viewer.html?file=${pdf_path}`);
     }
   },
   created() {

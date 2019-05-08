@@ -28,7 +28,7 @@
           <el-menu-item index="2-1" v-on:click="toWorldMap">雷达比数据世界分布</el-menu-item>
           <el-menu-item index="2-2" v-on:click="toChinaMap">雷达比数据中国分布</el-menu-item>
           <el-menu-item index="2-3" v-on:click="toDataAnalysis1">雷达比数据库分析</el-menu-item>
-          <el-menu-item index="2-4" v-on:click="toLidarAnalysis3">雷达比与波长</el-menu-item>
+          <el-menu-item index="2-4" v-on:click="toLidarAnalysis3">欧洲数据库可视化</el-menu-item>
       </el-submenu>
       <el-menu-item index="3">
         <i class="el-icon-setting"></i>

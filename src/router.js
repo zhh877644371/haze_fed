@@ -86,6 +86,11 @@ export default new Router({
       path: "/lidarAnalysis3",
       name: "lidarAnalysis3",
       component: () => import("./views/DataScene/LidarAnalysis3.vue")
-    }
+    },
+    // {
+    //   path: "/pdf",
+    //   name: "pdf",
+    //   component: () => import("../static/pdf/web/viewer.html")
+    // }
   ]
 });

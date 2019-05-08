@@ -11,6 +11,10 @@
           :disabled="item.disabled">
         </el-option>
       </el-select>
+      <template v-if="paper_name != ''">
+        <span class="u-tag-name" >数据来源：</span>
+        <el-tag @click.native="openFile">{{paper_name}}</el-tag>
+      </template>
     </div>
     <div id="container" class="u-pic-container"></div>
   </div>
@@ -20,7 +24,7 @@ import echarts from 'echarts';
 import { close, closeSync } from 'fs';
 import { server, CountryMap } from '@/assets/constant';
 import axios from 'axios';
-import { drawLidarHeight, drawLidarWave, drawLidarDepo } from '@/util/draw';
+import { drawLidarHeight, drawLidarWave, drawLidarDepo, drawLidarLine } from '@/util/draw';
 
 export default {
   name: '',
@@ -33,12 +37,15 @@ export default {
         value: 2,
         label: '雷达比与波长'
       }],
-      value: 1
+      value: 1,
+      paper_id: 0,
+      paper_name: '',
+      file_name: ''
     }
   },
   methods: {
     draw() {
-      console.log('value', this.value)
+      this.paper_name = "";
       let country = this.$route.params.country;
       let chart1 = this.$echarts.init(document.getElementById('container'));
       // 销毁之前的实例
@@ -57,7 +64,33 @@ export default {
             drawLidarHeight(myChart, res.data, country);
           } else if (this.value == 2) {
             drawLidarWave(myChart, res.data);
+          } else if (this.value == 3) {
+            drawLidarLine(myChart, res.data.result);
           }
+          myChart.on('click', (params) => {
+            console.log("params", params);
+            let id = params.data.paper_id;
+            axios.get(`${server}/getPaperInfo`, {
+              params: {
+                paper_id: id
+              }
+            }).then((res) => {
+              console.log('paper_info', res);
+              if (res.data.code == 200) {
+                this.paper_id = res.data.paper_info.id;
+                this.paper_name = res.data.paper_info.name;
+                this.file_name = res.data.paper_info.file_name;
+              } else {
+                this.$message({
+                  showClose: true,
+                  message: res.data.msg,
+                  type: 'error'
+                })
+              };
+            }).catch((err) => {
+              console.warn('err', err);
+            });
+          });
         } else {
           this.$message({
             showClose: true,
@@ -67,6 +100,18 @@ export default {
         }
       }).catch((err) => {
         console.warn('err', err);
+      });
+    },
+    openFile() {
+      let pdf_path = `pdf_file/${this.paper_id}.${this.file_name}.pdf`;
+      window.open(`http://localhost:8080/pdf/web/viewer.html?file=${pdf_path}`);
+    }
+  },
+  created() {
+    if(this.$route.params.country == "美国") {
+      this.options.push({
+        value: 3,
+        label: "雷达比与时间"
       });
     }
   },
@@ -84,5 +129,19 @@ export default {
   .u-pic-container {
     width: 100%;
     height: 600px;
+  }
+  .el-select {
+    width: 160px;
+  }
+  .u-tag-name {
+    margin-left: 20px;
+  }
+  .el-tag {
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
   }
 </style>
