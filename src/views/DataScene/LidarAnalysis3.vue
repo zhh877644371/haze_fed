@@ -1,26 +1,99 @@
 <template>
-  <div class="u-container">
-    <div id="container1" class="u-pic-container"></div>
-    <div id="container2" class="u-pic-container"></div>
+  <div>
+    <div class="u-select-container">
+      站点：
+      <el-select v-model="station" placeholder="请选择" @change="draw">
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
+    <div id="container" class="u-pic-container"></div>
   </div>
 </template>
 <script>
-import option1 from '@/echarts/height-time1.js';
-import option2 from '@/echarts/height-time2.js';
 import echarts from 'echarts';
+import { close, closeSync } from 'fs';
+import { server, CountryMap } from '@/assets/constant';
+import axios from 'axios';
+import { drawEuropeData } from '@/util/draw';
 
 export default {
   name: '',
   data () {
-    return {  
+    return {
+      options: [{
+        value: 'na',
+        label: 'na'
+      }, {
+        value: 'gr',
+        label: 'gr'
+      }, {
+        value: 'ba',
+        label: 'ba'
+      }, {
+        value: 'co',
+        label: 'co'
+      }, {
+        value: 'kb',
+        label: 'kb'
+      }, {
+        value: 'th',
+        label: 'th'
+      }, {
+        value: 'po',
+        label: 'po'
+      }, {
+        value: 'hb',
+        label: 'hb'
+      }, {
+        value: 'hh',
+        label: 'hh'
+      }, {
+        value: 'sp',
+        label: 'sp'
+      }, {
+        value: 'at',
+        label: 'at'
+      }, {
+        value: 'ms',
+        label: 'ms'
+      }, {
+        value: 'ox',
+        label: 'ox'
+      }],
+      station: "th"
     }
   },
   methods: {
     draw() {
-      var myChart = this.$echarts.init(document.getElementById('container1'));
-      myChart.setOption(option1);
-      var myChart2 = this.$echarts.init(document.getElementById('container2'));
-      myChart2.setOption(option2);
+      let chart1 = this.$echarts.init(document.getElementById('container'));
+      // 销毁之前的实例
+      chart1.dispose();
+      let myChart = this.$echarts.init(document.getElementById('container'));  
+      myChart.showLoading();
+      axios.get(`${server}/getEuropeData`, {
+        params: {
+          station: this.station
+        }
+      }).then((res) => {
+        console.log('res', res);
+        if(res.data.code == 200) {
+          myChart.hideLoading();
+          drawEuropeData(myChart, res.data.result);
+        } else {
+          this.$message({
+            showClose: true,
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      }).catch((err) => {
+        console.warn('err', err);
+      });
     }
   },
   mounted() {
@@ -29,11 +102,16 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  .u-container {
-    display: flex;
-    height: 600px;
+  .u-select-container {
+    width: 100%;
+    height: 50px;
+    text-align: left;
   }
   .u-pic-container {
-    width: 50%;
+    width: 100%;
+    height: 600px;
+  }
+  .el-select {
+    width: 160px;
   }
 </style>

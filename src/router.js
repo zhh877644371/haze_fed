@@ -58,6 +58,11 @@ export default new Router({
       component: () => import("./views/DataSearch/DataSearch.vue")
     },
     {
+      path: "/paperSearch",
+      name: "paperSearch",
+      component: () => import("./views/DataSearch/PaperSearch.vue")
+    },
+    {
       path: "/ChinaMap",
       name: "ChinaMap",
       component: () => import("./views/DataScene/ChinaMap.vue")
@@ -86,11 +91,6 @@ export default new Router({
       path: "/lidarAnalysis3",
       name: "lidarAnalysis3",
       component: () => import("./views/DataScene/LidarAnalysis3.vue")
-    },
-    // {
-    //   path: "/pdf",
-    //   name: "pdf",
-    //   component: () => import("../static/pdf/web/viewer.html")
-    // }
+    }
   ]
 });

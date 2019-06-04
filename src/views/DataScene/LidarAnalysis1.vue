@@ -72,7 +72,7 @@ export default {
             drawLidarDepo(myChart, res.data);
           }
           myChart.on('click', (params) => {
-            let id = params.data[params.data.length - 1];
+            let id = params.data.paper_id;
             axios.get(`${server}/getPaperInfo`, {
               params: {
                 paper_id: id

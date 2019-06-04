@@ -41,9 +41,13 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    height: 100%;
   }
   body > .el-container {
     margin-bottom: 40px;
+  }
+  .el-container {
+    height: 100%;
   }
   .el-header {
     background-color: #292929;

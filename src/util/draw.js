@@ -4,7 +4,8 @@ import {
   detachWaveData,
   dealPieLegend,
   dealCategoryData,
-  dealLineData
+  dealLineData,
+  dealEuropeData
 } from "./util";
 
 function drawLidarHeight(chart, data, location) {
@@ -81,6 +82,24 @@ function drawLidarHeight(chart, data, location) {
 
 function drawLidarWave(chart, data) {
   let lidarWaveData = detachWaveData(data.result);
+  let seriesData = [],
+    legendData = [];
+  if (lidarWaveData.wave355.length) {
+    seriesData.push(generateSeriesItem(lidarWaveData.wave355, "355nm"));
+    legendData.push("355nm");
+  }
+  if (lidarWaveData.wave532.length) {
+    seriesData.push(generateSeriesItem(lidarWaveData.wave532, "532nm"));
+    legendData.push("532nm");
+  }
+  if (lidarWaveData.wave351.length) {
+    seriesData.push(generateSeriesItem(lidarWaveData.wave351, "351nm"));
+    legendData.push("351nm");
+  }
+  if (lidarWaveData.wave1064.length) {
+    seriesData.push(generateSeriesItem(lidarWaveData.wave1064, "1064nm"));
+    legendData.push("1064nm");
+  }
   chart.setOption({
     title: {
       text: "雷达比综合分析"
@@ -119,9 +138,23 @@ function drawLidarWave(chart, data) {
         }
       }
     },
+    dataZoom: [
+      {
+        type: "inside",
+        xAxisIndex: [0],
+        start: 0,
+        end: 100
+      },
+      {
+        type: "inside",
+        yAxisIndex: [0],
+        start: 0,
+        end: 100
+      }
+    ],
     brush: {},
     legend: {
-      data: ["355nm", "532nm"],
+      data: legendData,
       left: "center"
     },
     xAxis: [
@@ -150,93 +183,50 @@ function drawLidarWave(chart, data) {
         name: "雷达比"
       }
     ],
-    series: [
-      {
-        name: "532nm",
-        type: "scatter",
-        data: lidarWaveData.wave532,
-        markArea: {
-          silent: true,
-          itemStyle: {
-            normal: {
-              color: "transparent",
-              borderWidth: 1,
-              borderType: "dashed"
-            }
-          },
-          data: [
-            [
-              {
-                // name: "532nm分布区间",
-                xAxis: "min",
-                yAxis: "min"
-              },
-              {
-                xAxis: "max",
-                yAxis: "max"
-              }
-            ]
-          ]
-        },
-        markPoint: {
-          data: [
-            { type: "max", name: "最大值" },
-            { type: "min", name: "最小值" }
-          ]
-        },
-        markLine: {
-          lineStyle: {
-            normal: {
-              type: "solid"
-            }
-          },
-          data: [{ type: "average", name: "平均值" }, { xAxis: 160 }]
+    series: seriesData
+  });
+}
+
+function generateSeriesItem(data, wavelength) {
+  let seriesItem = {
+    name: wavelength,
+    type: "scatter",
+    data: data,
+    markArea: {
+      silent: true,
+      itemStyle: {
+        normal: {
+          color: "transparent",
+          borderWidth: 1,
+          borderType: "dashed"
         }
       },
-      {
-        name: "355nm",
-        type: "scatter",
-        data: lidarWaveData.wave355,
-        markArea: {
-          silent: true,
-          itemStyle: {
-            normal: {
-              color: "transparent",
-              borderWidth: 1,
-              borderType: "dashed"
-            }
+      data: [
+        [
+          {
+            xAxis: "min",
+            yAxis: "min"
           },
-          data: [
-            [
-              {
-                // name: "355nm分布区间",
-                xAxis: "min",
-                yAxis: "min"
-              },
-              {
-                xAxis: "max",
-                yAxis: "max"
-              }
-            ]
-          ]
-        },
-        markPoint: {
-          data: [
-            { type: "max", name: "最大值" },
-            { type: "min", name: "最小值" }
-          ]
-        },
-        markLine: {
-          lineStyle: {
-            normal: {
-              type: "solid"
-            }
-          },
-          data: [{ type: "average", name: "平均值" }, { xAxis: 170 }]
+          {
+            xAxis: "max",
+            yAxis: "max"
+          }
+        ]
+      ]
+    },
+    markPoint: {
+      data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
+    },
+    markLine: {
+      lineStyle: {
+        normal: {
+          type: "solid"
         }
-      }
-    ]
-  });
+      },
+      data: [{ type: "average", name: "平均值" }, { xAxis: 160 }]
+    }
+  };
+  return seriesItem;
 }
 
 function drawLidarDepo(chart, data) {
@@ -326,10 +316,7 @@ function drawLidarLine(chart, data) {
     tooltip: {
       trigger: "axis",
       showDelay: 0,
-      // formatter: function (params) {
-      //   console.log('params', params);
-      // },
-      axisPointer:{
+      axisPointer: {
         show: true,
         type: "cross",
         lineStyle: {
@@ -353,14 +340,6 @@ function drawLidarLine(chart, data) {
     },
     xAxis: [
       {
-        // type: "value",
-        // scale: true,
-        // // axisLabel: {
-        // //   formatter: "{value}:00"
-        // // },
-        // splitLine: {
-        //   show: false
-        // },
         name: "时间",
         data: lineData.timeArr
       }
@@ -370,8 +349,7 @@ function drawLidarLine(chart, data) {
         type: "value",
         min: 20,
         max: 100,
-        name: "雷达比",
-        // data: [20, 40, 60, 80, 100, 120]
+        name: "雷达比"
       }
     ],
     series: [
@@ -484,4 +462,152 @@ function drawPie(chart, data, title) {
   });
 }
 
-export { drawLidarHeight, drawLidarWave, drawLidarDepo, drawLidarLine, drawCategory, drawPie };
+function drawEuropeData(chart, data) {
+  let europeData = dealEuropeData(data);
+  let seriesData = [],
+    legendData = [];
+  if (europeData.wave355.length) {
+    seriesData.push(generateEuropeSeries(europeData.wave355, "355nm"));
+    legendData.push("355nm");
+  }
+  if (europeData.wave532.length) {
+    seriesData.push(generateEuropeSeries(europeData.wave532, "532nm"));
+    legendData.push("532nm");
+  }
+  if (europeData.wave351.length) {
+    seriesData.push(generateEuropeSeries(europeData.wave351, "351nm"));
+    legendData.push("351nm");
+  }
+  if (europeData.wave1064.length) {
+    seriesData.push(generateEuropeSeries(europeData.wave1064, "1064nm"));
+    legendData.push("1064nm");
+  }
+  chart.setOption({
+    title: {
+      text: "计算所得雷达比综合分析"
+    },
+    grid: {
+      left: "3%",
+      right: "7%",
+      bottom: "3%",
+      containLabel: true
+    },
+    tooltip: {
+      showDelay: 0,
+      formatter: function(params) {
+        if (params.name != "") {
+          return `${params.name}：${params.value}`;
+        }
+        return `波长： ${params.seriesName}<br> 雷达比：${
+          params.value[1]
+        }<br>高度： ${params.value[0]}m`;
+      },
+      axisPointer: {
+        show: true,
+        type: "cross",
+        lineStyle: {
+          type: "dashed",
+          width: 1
+        }
+      }
+    },
+    toolbox: {
+      feature: {
+        dataZoom: {},
+        brush: {
+          type: ["rect", "polygon", "clear"]
+        }
+      }
+    },
+    dataZoom: [
+      {
+        type: "inside",
+        xAxisIndex: [0],
+        start: 0,
+        end: 100
+      },
+      {
+        type: "inside",
+        yAxisIndex: [0],
+        start: 0,
+        end: 100
+      }
+    ],
+    brush: {},
+    legend: {
+      data: legendData,
+      left: "center"
+    },
+    xAxis: [
+      {
+        type: "value",
+        scale: true,
+        axisLabel: {
+          formatter: "{value} m"
+        },
+        splitLine: {
+          show: false
+        },
+        name: "高度"
+      }
+    ],
+    yAxis: [
+      {
+        type: "value",
+        scale: true,
+        axisLabel: {
+          formatter: "{value}"
+        },
+        splitLine: {
+          show: false
+        },
+        name: "雷达比"
+      }
+    ],
+    series: seriesData
+  });
+}
+
+function generateEuropeSeries(data, wavelength) {
+  let seriesItem = {
+    name: wavelength,
+    type: "scatter",
+    data: data,
+    markArea: {
+      silent: true,
+      itemStyle: {
+        normal: {
+          color: "transparent",
+          borderWidth: 1,
+          borderType: "dashed"
+        }
+      },
+      data: [
+        [
+          {
+            xAxis: "min",
+            yAxis: "min"
+          },
+          {
+            xAxis: "max",
+            yAxis: "max"
+          }
+        ]
+      ]
+    },
+    markPoint: {
+      data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
+    }
+  };
+  return seriesItem;
+}
+
+export {
+  drawLidarHeight,
+  drawLidarWave,
+  drawLidarDepo,
+  drawLidarLine,
+  drawCategory,
+  drawPie,
+  drawEuropeData
+};

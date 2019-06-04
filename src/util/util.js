@@ -41,6 +41,8 @@ function detachWaveData(arr) {
   let result = {},
     wave355 = [],
     wave532 = [],
+    wave351 = [],
+    wave1064 = [],
     tmp = [];
   arr.forEach(item => {
     tmp = [item.height || 0, item.value || 0, item.wavelength || "未知波长"];
@@ -54,10 +56,22 @@ function detachWaveData(arr) {
         paper_id: item.paper_id,
         value: tmp
       });
+    } else if (item.wavelength == "351nm") {
+      wave351.push({
+        paper_id: item.paper_id,
+        value: tmp
+      });
+    } else if (item.wavelength == "1064nm") {
+      wave1064.push({
+        paper_id: item.paper_id,
+        value: tmp
+      });
     }
   });
   result.wave355 = wave355;
   result.wave532 = wave532;
+  result.wave351 = wave351;
+  result.wave1064 = wave1064;
   return result;
 }
 
@@ -133,11 +147,55 @@ function dealLineData(arr) {
   return result;
 }
 
+function dealEuropeData(arr) {
+  if (!Array.isArray(arr)) {
+    return;
+  }
+  let result = {},
+    wave355 = [],
+    wave532 = [],
+    wave351 = [],
+    wave1064 = [],
+    tmp = [],
+    lidar_ratio = 0;
+  arr.forEach(item => {
+    lidar_ratio = Math.abs(item.Extinction / item.Backscatter).toFixed(4);
+    if (lidar_ratio > 100) {
+      return;
+    }
+    tmp = [item.Altitude || 0, lidar_ratio, item.WaveLength || "未知波长"];
+    if (item.WaveLength == "355") {
+      wave355.push({
+        value: tmp
+      });
+    } else if (item.WaveLength == "532") {
+      wave532.push({
+        value: tmp
+      });
+    } else if (item.WaveLength == "351") {
+      wave351.push({
+        value: tmp
+      });
+    } else if (item.WaveLength == "1064") {
+      wave1064.push({
+        value: tmp
+      });
+    }
+  });
+  result.wave355 = wave355;
+  result.wave532 = wave532;
+  result.wave351 = wave351;
+  result.wave1064 = wave1064;
+  console.log("result", result);
+  return result;
+}
+
 export {
   dealLidarData,
   dataPointSort,
   detachWaveData,
   dealPieLegend,
   dealCategoryData,
-  dealLineData
+  dealLineData,
+  dealEuropeData
 };

@@ -8,18 +8,14 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
-      <!-- <el-submenu index="1">
+      <el-submenu index="1" v-if="isLogin">
         <template slot="title">
-          <i class="el-icon-upload"></i>
-          <span>数据导入</span>
+          <i class="el-icon-search"></i>
+          <span>数据查询</span>
         </template>
-          <el-menu-item index="1-1" v-on:click="toDataStorage">图片数据存储</el-menu-item>
-          <el-menu-item index="1-2" v-on:click="toTxtDataStorage">文本数据存储</el-menu-item>
-      </el-submenu> -->
-      <el-menu-item index="1">
-        <i class="el-icon-search"></i>
-        <span slot="title" v-on:click="toDataSearch">数据查询</span>
-      </el-menu-item>
+          <el-menu-item index="1-1" v-on:click="toDataSearch">雷达比数据查询</el-menu-item>
+          <el-menu-item index="1-2" v-on:click="toPaperSearch">收录论文查询</el-menu-item>
+      </el-submenu>
       <el-submenu index="2">
         <template slot="title">
           <i class="el-icon-view"></i>
@@ -30,7 +26,7 @@
           <el-menu-item index="2-3" v-on:click="toDataAnalysis1">雷达比数据库分析</el-menu-item>
           <el-menu-item index="2-4" v-on:click="toLidarAnalysis3">欧洲数据库可视化</el-menu-item>
       </el-submenu>
-      <el-menu-item index="3">
+      <el-menu-item index="3" v-if="isLogin">
         <i class="el-icon-setting"></i>
         <span slot="title" v-on:click="toUserInfChange">用户信息修改</span>
       </el-menu-item>
@@ -53,6 +49,12 @@ export default {
       isCollapse: true
     };
   },
+  // 计算属性
+  computed: {
+    isLogin() {
+      return this.$store.state.isLogin
+    }
+  },
   methods: {
     toHome() {
       this.$router.push('/');
@@ -65,6 +67,9 @@ export default {
     // },
     toDataSearch() {
       this.$router.push('/dataSearch');
+    },
+    toPaperSearch() {
+      this.$router.push('/paperSearch');
     },
     toScatterPicture() {
       this.$router.push('/picDataStorage2');
