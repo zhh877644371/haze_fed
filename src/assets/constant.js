@@ -1,4 +1,4 @@
-var server = "http://localhost:3030";
+var server = "http://10.203.2.223:3030";
 
 var ProvinceMap = {
   台湾: "Taiwan",
