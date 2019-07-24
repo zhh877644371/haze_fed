@@ -104,7 +104,7 @@ export default {
     },
     openFile() {
       let pdf_path = `pdf_file/${this.paper_id}.${this.file_name}.pdf`;
-      window.open(`http://localhost:8080/pdf/web/viewer.html?file=${pdf_path}`);
+      window.open(`http://10.203.2.223:9090/pdf/web/viewer.html?file=${pdf_path}`);
     }
   },
   created() {
