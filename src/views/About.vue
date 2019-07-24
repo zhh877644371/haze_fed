@@ -12,7 +12,7 @@
           <el-timeline-item timestamp="2019/1/20" placement="top">
             <el-card>
               <h4>数据库数据量简介</h4>
-              <p>目前存储抽取气溶胶数据7773条及欧洲观测数据10W+，数据量还在不断扩充中</p>
+              <p>目前存储抽取气溶胶数据10000+条及欧洲观测数据27W+，数据量还在不断扩充中</p>
             </el-card>
           </el-timeline-item>
           <el-timeline-item timestamp="2019/2/26" placement="top">
