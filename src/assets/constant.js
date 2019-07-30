@@ -1,4 +1,5 @@
 var server = "http://10.203.2.223:3030";
+//var server = "http://127.0.0.1:3030";
 
 var ProvinceMap = {
   台湾: "Taiwan",
@@ -21,7 +22,8 @@ var CountryMap = {
   沙特阿拉伯: "Saudi Arabia",
   南非: "Africa",
   澳大利亚: "Atlantic",
-  太平洋: "Pacific"
+  巴西: "Pacific",
+  佛得角共和国: "Cape Verde"
 };
 
 export { server, ProvinceMap, CountryMap };
