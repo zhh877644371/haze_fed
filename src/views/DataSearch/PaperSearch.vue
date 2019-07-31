@@ -23,7 +23,7 @@
     </div> -->
     <el-table
       :data="lidarData"
-      style="width: 100%"
+      style="width: 98%"
       :default-sort = "{prop: 'date', order: 'descending'}"
       >
       <el-table-column
