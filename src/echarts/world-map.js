@@ -218,28 +218,30 @@ var nameMap = {
 };
 
 var worldData = [];
-var countryMap = [
-  "中国",
-  "意大利",
-  "美国",
-  "韩国",
-  "希腊",
-  "泰国",
-  "日本",
-  "德国",
-  "印度",
-  "南非",
-  "澳大利亚",
-  "沙特阿拉伯",
-  "俄罗斯",
-  "巴西",
-  "佛得角共和国"
-];
+
+// 世界地图存在数据的国家及数据量
+var countryMap = {
+  '中国': 981,
+  '意大利': 904,
+  '美国': 378,
+  '韩国': 329,
+  '希腊': 77,
+  '泰国': 909,
+  '日本': 2373,
+  '德国': 1992,
+  '印度': 304,
+  '南非': 597,
+  '澳大利亚': 278,
+  '沙特阿拉伯': 794,
+  '俄罗斯': 409,
+  '巴西': 298,
+  '佛得角共和国': 165
+};
 
 for (var i in nameMap) {
   worldData.push({
     name: nameMap[i],
-    value: countryMap.includes(nameMap[i]) ? 1 : 0
+    value: Object.keys(countryMap).includes(nameMap[i]) ? countryMap[nameMap[i]] : 0
   });
 }
 
@@ -251,13 +253,13 @@ export default {
   tooltip: {},
   visualMap: {
     min: 0,
-    max: 1,
+    max: 2373,
     left: "left",
     top: "bottom",
-    text: ["存在数据", "不存在"],
+    text: ["数据量", "不存在"],
     seriesIndex: [1],
     inRange: {
-      color: ["#b7d5f5", "#006edd"]
+      color: ["#d5e0ea", "#0973e4", "#0904e6"] // 深浅颜色
     },
     calculable: true
   },

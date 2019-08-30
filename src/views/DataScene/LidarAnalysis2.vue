@@ -22,7 +22,7 @@
 <script>
 import echarts from 'echarts';
 import { close, closeSync } from 'fs';
-import { server, CountryMap } from '@/assets/constant';
+import { server, client, CountryMap } from '@/assets/constant';
 import axios from 'axios';
 import { drawLidarHeight, drawLidarWave, drawLidarDepo, drawLidarLine } from '@/util/draw';
 
@@ -104,7 +104,7 @@ export default {
     },
     openFile() {
       let pdf_path = `pdf_file/${this.paper_id}.${this.file_name}.pdf`;
-      window.open(`http://10.203.2.223:9090/pdf/web/viewer.html?file=${pdf_path}`);
+      window.open(`${client}/pdf/web/viewer.html?file=${pdf_path}`);
     }
   },
   created() {

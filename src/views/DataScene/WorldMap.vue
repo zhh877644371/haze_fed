@@ -23,7 +23,7 @@ export default {
         console.log(params);
         if(params.name == "中国") {
           router.push('/ChinaMap');
-        } else if(params.data.value == 1) {
+        } else if(params.data.value > 0) {
           router.push(`/lidarAnalysis2/${params.name}`);
         }
       })
